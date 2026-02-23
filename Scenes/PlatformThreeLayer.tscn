@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cucnkrhp16kbt"]
+
+[ext_resource type="PackedScene" uid="uid://cdb1im2sat21l" path="res://Scenes/Platform.tscn" id="1_d7lmw"]
+[ext_resource type="ArrayMesh" uid="uid://djerlnsjt5wla" path="res://Resources/3LayerPlatformMesh.tres" id="2_qwc1j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d43dg"]
+size = Vector3(2.1054688, 0.3671875, 2.15625)
+
+[node name="PlatformThreeLayer" unique_id=27204980 instance=ExtResource("1_d7lmw")]
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=1420858102]
+mesh = ExtResource("2_qwc1j")
+
+[node name="CollisionShape3D" parent="StaticBody3D" parent_id_path=PackedInt32Array(2109683736) index="0" unique_id=1288869932]
+transform = Transform3D(0.8834224, 0, -0.46857753, 0, 1, 0, 0.46857753, 0, 0.8834224, 0, 0, 0)
+shape = SubResource("BoxShape3D_d43dg")
+
+[node name="CollisionShape3D" parent="PlayerDetector" parent_id_path=PackedInt32Array(887640382) index="0" unique_id=1381939415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19158292, 0)

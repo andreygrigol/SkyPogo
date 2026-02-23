@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ckdkmkjjhx73s"]
+
+[ext_resource type="Script" uid="uid://c5cg8n5xbog34" path="res://Scripts/Spawner.gd" id="1_i7cfr"]
+[ext_resource type="PackedScene" uid="uid://cmohhtikjk7rh" path="res://Scenes/PlatformIsland.tscn" id="2_i7cfr"]
+[ext_resource type="PackedScene" uid="uid://bp4s550x3exas" path="res://Scenes/PlatformBounce.tscn" id="2_si0ot"]
+[ext_resource type="PackedScene" uid="uid://c4k2ny3m3p0qo" path="res://Scenes/PlatformRounded.tscn" id="4_1stx7"]
+[ext_resource type="PackedScene" uid="uid://cucnkrhp16kbt" path="res://Scenes/PlatformThreeLayer.tscn" id="5_evqau"]
+
+[node name="Spawner" type="Node" unique_id=1478276876]
+script = ExtResource("1_i7cfr")
+platform_scene = Array[PackedScene]([ExtResource("2_si0ot"), ExtResource("2_i7cfr"), ExtResource("4_1stx7"), ExtResource("5_evqau")])
+
+[node name="PlatformIsland" parent="." unique_id=27204980 instance=ExtResource("2_i7cfr")]

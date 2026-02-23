@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://cosd32o44lsss"]
+
+[ext_resource type="Script" uid="uid://bp43ya46x6b28" path="res://Scripts/Game.gd" id="1_b2bpf"]
+[ext_resource type="Texture2D" uid="uid://thoo1rp5m41f" path="res://Assets/Images/clouds_anime_6k.jpg" id="1_iukft"]
+[ext_resource type="PackedScene" uid="uid://b86bqcjentisj" path="res://Scenes/PlayerCam.tscn" id="2_kldst"]
+[ext_resource type="PackedScene" uid="uid://3d2uhup3elx0" path="res://Scenes/Player.tscn" id="3_j5yw3"]
+[ext_resource type="PackedScene" uid="uid://ckdkmkjjhx73s" path="res://Scenes/Spawner.tscn" id="4_kldst"]
+[ext_resource type="AudioStream" uid="uid://b7x87hy1u76pm" path="res://Assets/Sounds/Arroz Con Pollo.mp3" id="6_7lihs"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gl6un"]
+panorama = ExtResource("1_iukft")
+
+[sub_resource type="Sky" id="Sky_iukft"]
+sky_material = SubResource("PanoramaSkyMaterial_gl6un")
+
+[sub_resource type="Environment" id="Environment_gl6un"]
+background_mode = 2
+sky = SubResource("Sky_iukft")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="GDScript" id="GDScript_7lihs"]
+script/source = "extends Area3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+
+
+func _on_area_entered(_area: Area3D) -> void:
+	print(\"You died.\")
+"
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7lihs"]
+
+[node name="Game" type="Node" unique_id=1585336519]
+script = ExtResource("1_b2bpf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1012492768]
+environment = SubResource("Environment_gl6un")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1563662730]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="PlayerCam" parent="." unique_id=795839426 instance=ExtResource("2_kldst")]
+transform = Transform3D(1, 0, 0, 0, 0.88294756, 0.46947157, 0, -0.46947157, 0.88294756, 0, 8, 5.5)
+
+[node name="Player" parent="." unique_id=621013652 node_paths=PackedStringArray("fallen") instance=ExtResource("3_j5yw3")]
+transform = Transform3D(-0.99940836, 0, 0.03439359, 0, 1, 0, -0.03439359, 0, -0.99940836, 0, 5.056983, 0)
+fallen = NodePath("")
+
+[node name="Spawner" parent="." unique_id=1478276876 instance=ExtResource("4_kldst")]
+
+[node name="Floor" type="Area3D" parent="." unique_id=910191986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -50, 0)
+script = SubResource("GDScript_7lihs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=43806057]
+shape = SubResource("WorldBoundaryShape3D_7lihs")
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1868145437]
+stream = ExtResource("6_7lihs")
+volume_db = -20.0
+autoplay = true
+
+[connection signal="body_entered" from="Floor" to="." method="_on_floor_body_entered"]

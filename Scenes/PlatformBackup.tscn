@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://d0t2kg3omgs50"]
+
+[ext_resource type="Script" uid="uid://dyqjfdfgyuo1" path="res://Scripts/Platform.gd" id="1_wwydc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7fcwl"]
+albedo_color = Color(0.3019608, 0.44313726, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7fcwl"]
+material = SubResource("StandardMaterial3D_7fcwl")
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7fcwl"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="Animation" id="Animation_pquxj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8n7cf"]
+resource_name = "vanish"
+length = 1.8
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5, 0.7, 0.90000004, 1.1, 1.3000001, 1.5, 1.7, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.8, 0.8, 0.8), Vector3(1.2, 1.2, 1.2), Vector3(0.8, 0.8, 0.8), Vector3(1.2, 1.2, 1.2), Vector3(0.8, 0.8, 0.8), Vector3(1.2, 1.2, 1.2), Vector3(0.8, 0.8, 0.8), Vector3(1.2, 1.2, 1.2), Vector3(0.8, 0.8, 0.8), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kti7u"]
+_data = {
+&"RESET": SubResource("Animation_pquxj"),
+&"vanish": SubResource("Animation_8n7cf")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pquxj"]
+height = 0.2041626
+radius = 1.2631836
+
+[node name="PlatformBackup" type="Node3D" unique_id=27204980]
+script = ExtResource("1_wwydc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1420858102]
+mesh = SubResource("BoxMesh_7fcwl")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2109683736]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1288869932]
+shape = SubResource("BoxShape3D_7fcwl")
+
+[node name="Timer" type="Timer" parent="." unique_id=739647532]
+wait_time = 3.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1052701054]
+root_node = NodePath("../Timer")
+libraries/ = SubResource("AnimationLibrary_kti7u")
+
+[node name="PlayerDetector" type="Area3D" parent="." unique_id=887640382]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerDetector" unique_id=1381939415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35690308, 0)
+shape = SubResource("CylinderShape3D_pquxj")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
